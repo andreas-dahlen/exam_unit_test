@@ -6,12 +6,6 @@ const correctProduct = {
 	price: 500
 }
 
-const correctCart = {
-	cartId: 2001,
-	amount: 1,
-	item: correctProduct
-}
-
 describe('Cart', () => {
 	beforeEach(() => {
 		clearCart()
@@ -23,7 +17,7 @@ describe('Cart', () => {
 			clearCart()
 			expect(getCartItemCount()).toBe(0)
 		})
-	}) //not sure what else to test here xD
+	})
 
 
 	describe('addToCart', () => {
