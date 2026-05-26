@@ -8,12 +8,27 @@ describe('Cart', () => {
 		clearCart()
 	})
 
+	describe('addToCart', () => {
+		it('returns false if invaid product', () => {
+			const boolean = addToCart('clearly wrong')
+			expect(boolean).toBe(false)
+		})
+	})
+
+
+	// describe('getCartItemCount', () => {
+	// 	it('returns null if a valid count', () => {
+
+
+	// 	})
+	// })
+
 
 	// -------------------------------------------------- //
 	// Skriv dina testfall här
 
 	// Du får ett test att börja med
-	test('addToCart lägger till en ny produkt i kundvagnen', () => {
+	test('addToCart increments amount in cart', () => {
 		const itemCountBefore = getCartItemCount()
 		const input = { id: 1002, name: 'Vattenpistol', price: 40 }
 

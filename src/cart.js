@@ -17,7 +17,7 @@ Tips:
 // function clearCart()
 // -------------------------------------------------- //
 
-import { isCartItem, isProduct } from "./validation.js"
+import { isCartItem, isProduct } from "./validation/validation.js"
 
 let cart = []
 let idCounter = 2002
@@ -39,13 +39,13 @@ function getCartItemCount() {
  * @returns true om produkten lades till, false om parametern inte är ett korrekt objekt
  */
 function addToCart(newItem) {
-	if( !isProduct(newItem) ) {
+	if (!isProduct(newItem)) {
 		return false
 	}
 
 	const newId = idCounter
 	const index = cart.findIndex(ci => ci.item.id === newItem.id)
-	if( index === -1 ) {
+	if (index === -1) {
 		const cartItem = { id: idCounter, amount: 1, item: newItem }
 		idCounter++
 		cart.push(cartItem)

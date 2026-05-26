@@ -19,9 +19,12 @@ export const messages = {
   },
   amount: {
     'any.required': "Amount is missing",
-    'number.positive': "Amount can't be negative",
+    'number.positive': "Amount can't be negative or 0",
     'number.base': "Amount must be a number",
     'number.integer': "Amount must be whole numbers",
     'number.min': "Amount can't be zero"
+  },
+  item: {
+    'any.required': "Item is missing"
   }
 }

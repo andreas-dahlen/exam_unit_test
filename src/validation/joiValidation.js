@@ -14,7 +14,6 @@ export const productItemSchema = Joi.object({
     Joi.number()
       .positive()
       .integer()
-      .min(1)
       .required()
       .messages(messages.id),
 
@@ -45,10 +44,10 @@ export const cartItemSchema = Joi.object({
     Joi.number()
       .positive()
       .integer()
-      .min(1)
       .required()
       .messages(messages.amount),
 
   item:
     productItemSchema.required()
+      .messages(messages.item)
 })
