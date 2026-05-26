@@ -24,7 +24,7 @@ describe('Cart', () => {
 			clearCart()
 			expect(getCart().length).toBe(0)
 		})
-	})
+	}) //not sure what else to test here xD
 
 
 	describe('addToCart', () => {
@@ -42,6 +42,11 @@ describe('Cart', () => {
 			const badProduct = { ...correctProduct, id: undefined }
 			addToCart(badProduct)
 			expect(getCart()).toEqual(before)
+		})
+		it('succeeds if cart is changed', () => {
+			const before = getCart()
+			addToCart(correctProduct)
+			expect(getCart()).not.toEqual(before)
 		})
 	})
 
