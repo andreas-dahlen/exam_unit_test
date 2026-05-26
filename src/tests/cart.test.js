@@ -1,5 +1,5 @@
 // importera här
-import { addToCart, clearCart, getCart, getCartItemCount } from "../cart.js"
+import { addToCart, clearCart, getCart, getCartItemCount, getItem } from "../cart.js"
 const correctProduct = {
 	productId: 1001,
 	name: 'Badanka',
@@ -14,7 +14,6 @@ const correctCart = {
 
 describe('Cart', () => {
 	beforeEach(() => {
-		// Denna kod körs före varje test. Det är för att rensa kundvagnen, så inte saker ligger kvar från föregående test.
 		clearCart()
 	})
 
@@ -46,33 +45,24 @@ describe('Cart', () => {
 		it('succeeds if cart is changed', () => {
 			const before = getCart()
 			addToCart(correctProduct)
-			expect(getCart()).not.toEqual(before)
+			expect(getCart().length).toEqual(before.length + 1)
 		})
-	})
+	}) //not much else to do here...
 
-
-	// describe('getCartItemCount', () => {
-	// 	it('returns null if a valid count', () => {
-
-
-	// 	})
-	// })
-
-
-	// -------------------------------------------------- //
-	// Skriv dina testfall här
-
-	// Du får ett test att börja med
 	describe('getCartItemCount', () => {
-		test('increments amount in cart', () => {
+		test('succeeds if count increments', () => {
 			const itemCountBefore = getCartItemCount()
 			addToCart(correctProduct)
 			const itemCountAfter = getCartItemCount()
 
 			expect(itemCountAfter).toBe(itemCountBefore + 1)
 		})
+	}) //kind of useless xD
+
+	describe('getItem', () => {
+		test('succeeds if it does not return null', () => {
+			addToCart(correctProduct)
+			expect(getItem(0)).not.toBe(null)
+		})
 	})
-
-
-	// -------------------------------------------------- //
 })

@@ -24,10 +24,12 @@ let idCounter = 2002
 // -------------------------------------------------- //
 
 
+function getItem(index) {
+	const cartItem = cart[index]
+	if (!isCartItem(cartItem)) return null
+	return cartItem
+}
 
-// Din kod börjar här
-// Du får en funktion att börja med
-// Kom ihåg att börja med testfallet - inte koden
 
 function getCart() {
 	return [...cart]
@@ -37,7 +39,6 @@ function getCart() {
 function getCartItemCount() {
 	return idCounter
 }
-
 
 /**
  * Lägger till en "product" till kundvagnen.
@@ -66,4 +67,4 @@ function clearCart() {
 
 
 
-export { getCartItemCount, addToCart, clearCart, getCart }
+export { getCartItemCount, addToCart, clearCart, getCart, getItem }
