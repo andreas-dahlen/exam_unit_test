@@ -47,7 +47,15 @@ function getCartItemCount() {
 }
 
 function removeFromCart(itemId) {
+	const index = cart.findIndex(item => item.cartId === itemId)
+	if (index === -1) return false
 
+	if (cart[index].amount === 1) {
+		cart.splice(index, 1)
+	} else {
+		cart[index].amount--
+	}
+	return true
 }
 
 /**

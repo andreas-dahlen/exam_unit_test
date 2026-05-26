@@ -1,5 +1,5 @@
 // importera här
-import { addToCart, clearCart, getCart, getCartItemCount, getItem, getTotalCartValue } from "../cart.js"
+import { addToCart, clearCart, getCart, getCartItemCount, getItem, getTotalCartValue, removeFromCart } from "../cart.js"
 const correctProduct = {
 	productId: 1001,
 	name: 'Badanka',
@@ -81,6 +81,15 @@ describe('Cart', () => {
 		})
 		test('succeeds if returns 0', () => {
 			expect(getTotalCartValue()).toEqual(0)
+		})
+	})
+
+	describe('removeFromCart', () => {
+		test('succeeds if cart is empty', () => {
+			addToCart(correctProduct)
+			removeFromCart(correctProduct.productId)
+
+			expect(getCart().length).toEqual(0)
 		})
 	})
 })
