@@ -34,7 +34,7 @@ export const productItemSchema = Joi.object({
       .messages(messages.price)
 })
 
-const cartItemsSchema = Joi.object({
+export const cartItemSchema = Joi.object({
   id:
     Joi.number()
       .positive()
