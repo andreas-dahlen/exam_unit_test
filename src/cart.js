@@ -41,9 +41,12 @@ function getCart() {
 	return [...cart]
 }
 
-
 function getCartItemCount() {
 	return idCounter
+}
+
+function editCart(itemId, newValues) {
+
 }
 
 function removeFromCart(itemId) {

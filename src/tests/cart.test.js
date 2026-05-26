@@ -91,5 +91,15 @@ describe('Cart', () => {
 
 			expect(getCart().length).toEqual(0)
 		})
+		test('succeeds if amount is reduced', () => {
+			addToCart(correctProduct)
+			addToCart(correctProduct)
+			addToCart(correctProduct)
+			removeFromCart(correctProduct.productId)
+
+			const actual = getItem(0).amount
+
+			expect(actual).toBe(2)
+		})
 	})
 })
