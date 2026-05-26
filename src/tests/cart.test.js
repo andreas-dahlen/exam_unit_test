@@ -1,5 +1,5 @@
 // importera här
-import { addToCart, clearCart, getCart, getCartItemCount, getItem } from "../cart.js"
+import { addToCart, clearCart, getCart, getCartItemCount, getItem, getTotalCartValue } from "../cart.js"
 const correctProduct = {
 	productId: 1001,
 	name: 'Badanka',
@@ -60,7 +60,7 @@ describe('Cart', () => {
 	}) //kind of useless xD
 
 	describe('getItem', () => {
-		test('succeeds if it does not return null', () => {
+		test('succeeds if cartItem equals the added product', () => {
 			addToCart(correctProduct)
 			const expected = { cartId: correctProduct.productId, amount: 1, item: correctProduct }
 
@@ -68,6 +68,19 @@ describe('Cart', () => {
 		})
 		test('succeeds if it does return null', () => {
 			expect(getItem(999)).toBe(null)
+		})
+	})
+
+	describe('getTotalCartValue', () => {
+		test('succeeds if returns correct value', () => {
+			addToCart(correctProduct)
+			addToCart(correctProduct)
+			addToCart(correctProduct)
+			const expected = correctProduct.price * 3
+			expect(getTotalCartValue()).toEqual(expected)
+		})
+		test('succeeds if returns 0', () => {
+			expect(getTotalCartValue()).toEqual(0)
 		})
 	})
 })

@@ -30,6 +30,12 @@ function getItem(index) {
 	return cartItem
 }
 
+function getTotalCartValue() {
+	return cart.reduce((total, currentItem) => {
+		return total + (currentItem.item.price * currentItem.amount)
+	}, 0)
+}
+
 
 function getCart() {
 	return [...cart]
@@ -40,15 +46,16 @@ function getCartItemCount() {
 	return idCounter
 }
 
+function removeFromCart(itemId) {
+
+}
+
 /**
  * Lägger till en "product" till kundvagnen.
  * @returns true om produkten lades till, false om parametern inte är ett korrekt objekt
  */
 function addToCart(newItem) {
-	if (!isProduct(newItem)) {
-		return false
-	}
-
+	if (!isProduct(newItem)) return false
 	const index = cart.findIndex(ci => ci.item.productId === newItem.productId)
 	if (index === -1) {
 		const cartItem = { cartId: newItem.productId, amount: 1, item: newItem }
@@ -67,4 +74,4 @@ function clearCart() {
 
 
 
-export { getCartItemCount, addToCart, clearCart, getCart, getItem }
+export { getCartItemCount, addToCart, clearCart, getCart, getItem, getTotalCartValue, removeFromCart }
