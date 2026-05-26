@@ -63,16 +63,14 @@ describe('Cart', () => {
 	// Skriv dina testfall här
 
 	// Du får ett test att börja med
-	test('addToCart increments amount in cart', () => {
-		const itemCountBefore = getCartItemCount()
-		const input = { id: 1002, name: 'Vattenpistol', price: 40 }
+	describe('getCartItemCount', () => {
+		test('increments amount in cart', () => {
+			const itemCountBefore = getCartItemCount()
+			addToCart(correctProduct)
+			const itemCountAfter = getCartItemCount()
 
-		// addToCart returnerar inget - den påverkar kundvagnen
-		// vi behöver använda getCartItemCount för att se om det har lagts till en ny produkt i kundvagnen
-		addToCart(input)
-		const itemCountAfter = getCartItemCount()
-
-		expect(itemCountAfter).toBe(itemCountBefore + 1)
+			expect(itemCountAfter).toBe(itemCountBefore + 1)
+		})
 	})
 
 
