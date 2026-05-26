@@ -20,9 +20,17 @@ Tips:
 import { isCartItem, isProduct } from "./validation/validation.js"
 
 let cart = []
-let idCounter = 2002
+let counter = 0
 // -------------------------------------------------- //
 
+function clearCart() {
+	counter = 0
+	cart = []
+}
+
+function getCart() {
+	return [...cart]
+}
 
 function getItem(index) {
 	const cartItem = cart[index]
@@ -36,17 +44,22 @@ function getTotalCartValue() {
 	}, 0)
 }
 
-
-function getCart() {
-	return [...cart]
-}
-
 function getCartItemCount() {
-	return idCounter
+	return counter
 }
 
 function editCart(itemId, newValues) {
+	if (!isProduct(newValues)) return false
+	const index = cart.findIndex(item => item.cartId === itemId)
 
+	if (index === -1) return false
+
+	cart[index].item = {
+		...cart[index].item,
+		...newValues
+	}
+
+	return true
 }
 
 function removeFromCart(itemId) {
@@ -58,31 +71,21 @@ function removeFromCart(itemId) {
 	} else {
 		cart[index].amount--
 	}
+	counter--
 	return true
 }
 
-/**
- * Lägger till en "product" till kundvagnen.
- * @returns true om produkten lades till, false om parametern inte är ett korrekt objekt
- */
 function addToCart(newItem) {
 	if (!isProduct(newItem)) return false
 	const index = cart.findIndex(ci => ci.item.productId === newItem.productId)
 	if (index === -1) {
 		const cartItem = { cartId: newItem.productId, amount: 1, item: newItem }
-		idCounter++
 		cart.push(cartItem)
 	} else {
 		cart[index].amount++
 	}
+	counter++
 	return true
 }
 
-
-function clearCart() {
-	cart = []
-}
-
-
-
-export { getCartItemCount, addToCart, clearCart, getCart, getItem, getTotalCartValue, removeFromCart }
+export { getCartItemCount, addToCart, clearCart, getCart, getItem, getTotalCartValue, removeFromCart, editCart }

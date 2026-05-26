@@ -1,5 +1,5 @@
 // importera här
-import { addToCart, clearCart, getCart, getCartItemCount, getItem, getTotalCartValue, removeFromCart } from "../cart.js"
+import { addToCart, clearCart, editCart, getCart, getCartItemCount, getItem, getTotalCartValue, removeFromCart } from "../cart.js"
 const correctProduct = {
 	productId: 1001,
 	name: 'Badanka',
@@ -18,88 +18,103 @@ describe('Cart', () => {
 	})
 
 	describe('clearCart', () => {
-		it('succeeds if cart is empty', () => {
+		it('empties the cart', () => {
 			addToCart(correctProduct)
 			clearCart()
-			expect(getCart().length).toBe(0)
+			expect(getCartItemCount()).toBe(0)
 		})
 	}) //not sure what else to test here xD
 
 
 	describe('addToCart', () => {
-		it('returns false if invaid product', () => {
+		it('returns false when product is invaid', () => {
 			const boolean = addToCart('clearly wrong')
 			expect(boolean).toBe(false)
 		})
-		it('returns true if valid product', () => {
+		it('returns true when product is valid', () => {
 			const boolean = addToCart(correctProduct)
 			expect(boolean).toBe(true)
 		})
 
-		it('succeeds if cart stays the same', () => {
+		it('does not add invalid products to cart', () => {
 			const before = getCart()
 			const badProduct = { ...correctProduct, id: undefined }
 			addToCart(badProduct)
 			expect(getCart()).toEqual(before)
 		})
-		it('succeeds if cart is changed', () => {
-			const before = getCart()
+		it('increments cart count when product is added', () => {
+			const before = getCartItemCount()
 			addToCart(correctProduct)
-			expect(getCart().length).toEqual(before.length + 1)
+			expect(getCartItemCount()).toBe(before + 1)
 		})
-	}) //not much else to do here...
-
-	describe('getCartItemCount', () => {
-		test('succeeds if count increments', () => {
-			const itemCountBefore = getCartItemCount()
-			addToCart(correctProduct)
-			const itemCountAfter = getCartItemCount()
-
-			expect(itemCountAfter).toBe(itemCountBefore + 1)
-		})
-	}) //kind of useless xD
+	})
 
 	describe('getItem', () => {
-		test('succeeds if cartItem equals the added product', () => {
+		it('returns matching cart item when it exists', () => {
 			addToCart(correctProduct)
 			const expected = { cartId: correctProduct.productId, amount: 1, item: correctProduct }
 
 			expect(getItem(0)).toEqual(expected)
 		})
-		test('succeeds if it does return null', () => {
-			expect(getItem(999)).toBe(null)
+		it('returns null when item index does not exist', () => {
+			expect(getItem(42)).toBe(null)
 		})
 	})
 
 	describe('getTotalCartValue', () => {
-		test('succeeds if returns correct value', () => {
+		it('calculates total cart value correctly', () => {
 			addToCart(correctProduct)
 			addToCart(correctProduct)
 			addToCart(correctProduct)
 			const expected = correctProduct.price * 3
 			expect(getTotalCartValue()).toEqual(expected)
 		})
-		test('succeeds if returns 0', () => {
+		it('returns 0 when cart is empty', () => {
 			expect(getTotalCartValue()).toEqual(0)
 		})
 	})
 
 	describe('removeFromCart', () => {
-		test('succeeds if cart is empty', () => {
+		it('reduces item quantity when product is removed', () => {
+			const expected = getCartItemCount()
 			addToCart(correctProduct)
 			removeFromCart(correctProduct.productId)
 
-			expect(getCart().length).toEqual(0)
+			expect(getCartItemCount()).toEqual(expected)
 		})
-		test('succeeds if amount is reduced', () => {
+		it('decreases cart count when item is removed', () => {
+			const expected = getCartItemCount()
 			addToCart(correctProduct)
 			addToCart(correctProduct)
 			addToCart(correctProduct)
 			removeFromCart(correctProduct.productId)
 
-			const actual = getItem(0).amount
+			expect(getCartItemCount()).toBe(expected + 2)
+		})
+	})
 
-			expect(actual).toBe(2)
+	describe('editCart', () => {
+		it('updates cart item when valid changes are applied', () => {
+			addToCart(correctProduct)
+			const expected = {
+				productId: 42,
+				name: 'CHANGED',
+				price: 42
+			}
+			editCart(correctProduct.productId, expected)
+			expect(getItem(0).item).toEqual(expected)
+		})
+
+		it('ignores invalid updates to cart item', () => {
+			addToCart(correctProduct)
+			const changes = {
+				productId: "wrong",
+				name: 53,
+				price: "wrong"
+			}
+
+			editCart(correctProduct.productId, changes)
+			expect(getItem(0).item).toEqual(correctProduct)
 		})
 	})
 })
