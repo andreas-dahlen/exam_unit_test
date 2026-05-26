@@ -49,6 +49,6 @@ export const cartItemSchema = Joi.object({
       .required()
       .messages(messages.amount),
 
-  exampleProduct:
+  item:
     productItemSchema.required()
 })

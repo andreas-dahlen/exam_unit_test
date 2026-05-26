@@ -1,4 +1,4 @@
-import { getProductError, isCartItem, isProduct } from "../validation/validation.js"
+import { getCartError, getProductError, isCartItem, isProduct } from "../validation/validation.js"
 // Examples of a valid product and a valid cart item. You may use these when testing below.
 const correctProduct = {
 	id: 1001,
@@ -6,51 +6,17 @@ const correctProduct = {
 	price: 500
 }
 
-const correctCartList = [
-	{
-		id: 2,
-		amount: 14,
-		item: correctProduct
-	},
-	{
-		id: 3253,
-		amount: 3,
-		item: correctProduct
-	},
-	{
-		id: 6362,
-		amount: 5,
-		item: correctProduct
-	},
-]
-
-const exampleWrongCartList = [
-	{
-		id: -5,
-		amount: 14,
-		item: correctProduct
-	},
-	{
-		id: 3253,
-		amount: -10,
-		item: correctProduct
-	},
-	{
-		id: 6362,
-		amount: 5,
-		item: {}
-	},
-]
-
-
-
-
+const correctCart = {
+	id: 2001,
+	amount: 1,
+	item: correctProduct
+}
 
 // Group tests using "describe"
 describe('Validation', () => {
 	describe('Product tests', () => {
 
-		it('returns true for a joi validated product', () => {
+		it('returns true for a validated product object', () => {
 			expect(isProduct(correctProduct)).toBe(true)
 		})
 
@@ -67,29 +33,49 @@ describe('Validation', () => {
 				const badProduct = { ...correctProduct, price: 'abc' }
 				expect(isProduct(badProduct)).toBe(false)
 			})
-			describe('Error message tests', () => {
-				it('returns message when id is not positive', () => {
-					const badProduct = { ...correctProduct, id: -123 }
-					const error = getProductError(badProduct)
-					expect(error.details[0].type).toBe('number.positive')
-				})
-				it('returns message when name is empty', () => {
-					const badProduct = { ...correctProduct, name: '' }
-					const error = getProductError(badProduct)
-					expect(error.details[0].type).toBe('string.empty')
-				})
-				it('returns message when price is not an integer', () => {
-					const badProduct = { ...correctProduct, price: 0.5 }
-					const error = getProductError(badProduct)
-					expect(error.details[0].type).toBe('number.integer')
-				})
+		})
+		describe('Error message tests', () => {
+			it('returns message when id is not positive', () => {
+				const badProduct = { ...correctProduct, id: -123 }
+				const error = getProductError(badProduct)
+				expect(error.details[0].type).toBe('number.positive')
+			})
+			it('returns message when name is empty', () => {
+				const badProduct = { ...correctProduct, name: '' }
+				const error = getProductError(badProduct)
+				expect(error.details[0].type).toBe('string.empty')
+			})
+			it('returns message when price is not an integer', () => {
+				const badProduct = { ...correctProduct, price: 0.5 }
+				const error = getProductError(badProduct)
+				expect(error.details[0].type).toBe('number.integer')
 			})
 		})
 	})
 	describe('Cart tests', () => {
-		it('returns true if valid Cart list', () => {
-			expect(isCartItem(correctCartList)).toBe(true)
+		it('returns true for a valid Cart object', () => {
+			expect(isCartItem(correctCart)).toBe(true)
 		})
+
+		describe('Data type tests', () => {
+			it('returns false when id is not a number', () => {
+				const badCart = { ...correctCart, id: 'abc' }
+				expect(isCartItem(badCart)).toBe(false)
+			})
+			it('returns false when amount is a string', () => {
+				const badCart = { ...correctCart, amount: '123' }
+				expect(isCartItem(badCart)).toBe(false)
+			})
+			it('returns false when item does NOT exist', () => {
+				const badCart = { ...correctCart, item: {} }
+				expect(isCartItem(badCart)).toBe(false)
+			})
+		})
+
+		// it('returns errorMessage for ', () => {
+		// 	const error = getCartError(correctCart)
+		// 	expect(error.details[0].type).toBe(null)
+		// })
 	})
 })
 

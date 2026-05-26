@@ -13,7 +13,7 @@ export function isCartItem(maybeCartItem) {
     maybeCartItem,
     {
       abortEarly: false,
-      covert: false
+      convert: false
     }
   )
   return !error
@@ -31,9 +31,19 @@ export function isProduct(maybeProduct) {
 }
 
 
-
 export function getProductError(maybeProduct) {
   const { error } = productItemSchema.validate(
+    maybeProduct,
+    {
+      abortEarly: false,
+      convert: false
+    }
+  )
+  return error || null
+}
+
+export function getCartError(maybeProduct) {
+  const { error } = cartItemSchema.validate(
     maybeProduct,
     {
       abortEarly: false,
