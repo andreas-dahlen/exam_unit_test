@@ -62,7 +62,7 @@ function addToCart(newItem) {
 
 
 function clearCart() {
-	throw new Error('Not implemented yet')
+	cart = []
 }
 
 

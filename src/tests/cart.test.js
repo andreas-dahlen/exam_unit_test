@@ -1,5 +1,5 @@
 // importera här
-import { addToCart, clearCart, getCartItemCount } from "../cart.js"
+import { addToCart, clearCart, getCart, getCartItemCount } from "../cart.js"
 const correctProduct = {
 	id: 1001,
 	name: 'Badanka',
