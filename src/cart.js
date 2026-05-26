@@ -24,9 +24,14 @@ let idCounter = 2002
 // -------------------------------------------------- //
 
 
+
 // Din kod börjar här
 // Du får en funktion att börja med
 // Kom ihåg att börja med testfallet - inte koden
+
+function getCart() {
+	return [...cart]
+}
 
 
 function getCartItemCount() {
@@ -46,7 +51,7 @@ function addToCart(newItem) {
 	const newId = idCounter
 	const index = cart.findIndex(ci => ci.item.id === newItem.id)
 	if (index === -1) {
-		const cartItem = { id: idCounter, amount: 1, item: newItem }
+		const cartItem = { id: newItem.id, amount: 1, item: newItem }
 		idCounter++
 		cart.push(cartItem)
 	} else {
@@ -62,4 +67,4 @@ function clearCart() {
 
 
 
-export { getCartItemCount, addToCart, clearCart }
+export { getCartItemCount, addToCart, clearCart, getCart }

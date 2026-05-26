@@ -1,17 +1,40 @@
 // importera här
-import { addToCart, getCartItemCount } from "../cart"
+import { addToCart, clearCart, getCartItemCount } from "../cart.js"
+const correctProduct = {
+	id: 1001,
+	name: 'Badanka',
+	price: 500
+}
 
+const correctCart = {
+	id: 2001,
+	amount: 1,
+	item: correctProduct
+}
 
 describe('Cart', () => {
 	beforeEach(() => {
 		// Denna kod körs före varje test. Det är för att rensa kundvagnen, så inte saker ligger kvar från föregående test.
-		clearCart()
+		// clearCart()
 	})
+
+	describe('clearCart', () => {
+		it('succeeds if cart is empty', () => {
+			addToCart(correctProduct)
+			clearCart()
+			expect(getCart().length).toBe(0)
+		})
+	})
+
 
 	describe('addToCart', () => {
 		it('returns false if invaid product', () => {
 			const boolean = addToCart('clearly wrong')
 			expect(boolean).toBe(false)
+		})
+		it('returns true if valid product', () => {
+			const boolean = addToCart(correctProduct)
+			expect(boolean).toBe(true)
 		})
 	})
 
