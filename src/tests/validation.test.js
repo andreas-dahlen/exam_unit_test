@@ -1,13 +1,13 @@
 import { getCartError, getProductError, isCartItem, isProduct } from "../validation/validation.js"
 // Examples of a valid product and a valid cart item. You may use these when testing below.
 const correctProduct = {
-	id: 1001,
+	productId: 1001,
 	name: 'Badanka',
 	price: 500
 }
 
 const correctCart = {
-	id: 2001,
+	cartId: 2001,
 	amount: 1,
 	item: correctProduct
 }

@@ -48,9 +48,9 @@ function addToCart(newItem) {
 		return false
 	}
 
-	const index = cart.findIndex(ci => ci.item.id === newItem.id)
+	const index = cart.findIndex(ci => ci.item.productId === newItem.productId)
 	if (index === -1) {
-		const cartItem = { id: newItem.id, amount: 1, item: newItem }
+		const cartItem = { cartId: newItem.productId, amount: 1, item: newItem }
 		idCounter++
 		cart.push(cartItem)
 	} else {

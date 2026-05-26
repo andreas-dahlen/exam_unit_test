@@ -1,13 +1,13 @@
 // importera här
 import { addToCart, clearCart, getCart, getCartItemCount } from "../cart.js"
 const correctProduct = {
-	id: 1001,
+	productId: 1001,
 	name: 'Badanka',
 	price: 500
 }
 
 const correctCart = {
-	id: 2001,
+	cartId: 2001,
 	amount: 1,
 	item: correctProduct
 }

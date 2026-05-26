@@ -10,7 +10,7 @@ import { messages } from './messages'
 // 5. repeat
 
 export const productItemSchema = Joi.object({
-  id:
+  productId:
     Joi.number()
       .positive()
       .integer()
@@ -34,7 +34,7 @@ export const productItemSchema = Joi.object({
 })
 
 export const cartItemSchema = Joi.object({
-  id:
+  cartId:
     Joi.number()
       .positive()
       .integer()

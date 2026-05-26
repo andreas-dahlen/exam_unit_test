@@ -52,26 +52,3 @@ export function getCartError(maybeProduct) {
   )
   return error || null
 }
-
-
-// export function idProductError(id) {
-//   const { error } = productItemSchema
-//     .extract('id')
-//     .validate(id, { convert: false })
-
-//   return error || null
-// }
-// export function nameProductError(name) {
-//   const { error } = productItemSchema
-//     .extract('name')
-//     .validate(name, { convert: false })
-
-//   return error || null
-// }
-// export function priceProductError(price) {
-//   const { error } = productItemSchema
-//     .extract('price')
-//     .validate(price, { convert: false })
-
-//   return error || null
-// }
