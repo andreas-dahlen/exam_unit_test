@@ -1,5 +1,12 @@
 export const messages = {
-  id: {
+  productId: {
+    'any.required': "Id is missing",
+    'number.positive': "Id can't be negative",
+    'number.base': "Id must be a number",
+    'number.integer': "Id must be whole numbers",
+    'number.min': "Id can't be zero"
+  },
+  cartId: {
     'any.required': "Id is missing",
     'number.positive': "Id can't be negative",
     'number.base': "Id must be a number",

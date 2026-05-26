@@ -15,7 +15,7 @@ export const productItemSchema = Joi.object({
       .positive()
       .integer()
       .required()
-      .messages(messages.id),
+      .messages(messages.productId),
 
   name:
     Joi.string()
@@ -31,7 +31,7 @@ export const productItemSchema = Joi.object({
       .max(1000000)
       .required()
       .messages(messages.price)
-})
+}).required()
 
 export const cartItemSchema = Joi.object({
   cartId:
@@ -39,7 +39,7 @@ export const cartItemSchema = Joi.object({
       .positive()
       .integer()
       .required()
-      .messages(messages.id),
+      .messages(messages.cartId),
   amount:
     Joi.number()
       .positive()
@@ -50,4 +50,4 @@ export const cartItemSchema = Joi.object({
   item:
     productItemSchema.required()
       .messages(messages.item)
-})
+}).required()

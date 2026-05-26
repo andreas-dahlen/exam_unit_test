@@ -62,7 +62,12 @@ describe('Cart', () => {
 	describe('getItem', () => {
 		test('succeeds if it does not return null', () => {
 			addToCart(correctProduct)
-			expect(getItem(0)).not.toBe(null)
+			const expected = { cartId: correctProduct.productId, amount: 1, item: correctProduct }
+
+			expect(getItem(0)).toEqual(expected)
+		})
+		test('succeeds if it does return null', () => {
+			expect(getItem(999)).toBe(null)
 		})
 	})
 })
