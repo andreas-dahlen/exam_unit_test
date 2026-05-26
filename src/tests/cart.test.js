@@ -15,7 +15,7 @@ const correctCart = {
 describe('Cart', () => {
 	beforeEach(() => {
 		// Denna kod körs före varje test. Det är för att rensa kundvagnen, så inte saker ligger kvar från föregående test.
-		// clearCart()
+		clearCart()
 	})
 
 	describe('clearCart', () => {
@@ -35,6 +35,13 @@ describe('Cart', () => {
 		it('returns true if valid product', () => {
 			const boolean = addToCart(correctProduct)
 			expect(boolean).toBe(true)
+		})
+
+		it('succeeds if cart stays the same', () => {
+			const before = getCart()
+			const badProduct = { ...correctProduct, id: undefined }
+			addToCart(badProduct)
+			expect(getCart()).toEqual(before)
 		})
 	})
 
