@@ -53,6 +53,11 @@ describe('Validation', () => {
 				const error = getProductError(badProduct)
 				expect(error.details[0].path).toEqual(['price'])
 			})
+			it('returns error for price when value is more than a milion', () => {
+				const badProduct = { ...correctProduct, price: 1000001 }
+				const error = getProductError(badProduct)
+				expect(error.details[0].path).toEqual(['price'])
+			})
 		})
 	})
 	describe('Cart tests', () => {

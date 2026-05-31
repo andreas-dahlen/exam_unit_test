@@ -1,5 +1,5 @@
-// importera här
 import { addToCart, clearCart, editCart, getCart, getCartItemCount, getItem, getTotalCartValue, removeFromCart } from "../cart.js"
+
 const correctProduct = {
 	productId: 1001,
 	name: 'Badanka',
@@ -15,31 +15,7 @@ describe('Cart', () => {
 		it('empties the cart', () => {
 			addToCart(correctProduct)
 			clearCart()
-			expect(getCartItemCount()).toBe(0)
-		})
-	})
-
-
-	describe('addToCart', () => {
-		it('returns false when product is invaid', () => {
-			const boolean = addToCart('clearly wrong')
-			expect(boolean).toBe(false)
-		})
-		it('returns true when product is valid', () => {
-			const boolean = addToCart(correctProduct)
-			expect(boolean).toBe(true)
-		})
-
-		it('does not add invalid products to cart', () => {
-			const before = getCart()
-			const badProduct = { ...correctProduct, id: undefined }
-			addToCart(badProduct)
-			expect(getCart()).toEqual(before)
-		})
-		it('increments cart count when product is added', () => {
-			const before = getCartItemCount()
-			addToCart(correctProduct)
-			expect(getCartItemCount()).toBe(before + 1)
+			expect(getCart().length).toBe(0)
 		})
 	})
 
@@ -48,7 +24,7 @@ describe('Cart', () => {
 			addToCart(correctProduct)
 			const expected = { cartId: correctProduct.productId, amount: 1, item: correctProduct }
 
-			expect(getItem(0)).toEqual(expected)
+			expect(getItem(0)).toStrictEqual(expected)
 		})
 		it('returns null when item index does not exist', () => {
 			expect(getItem(42)).toBe(null)
@@ -64,30 +40,112 @@ describe('Cart', () => {
 			expect(getTotalCartValue()).toEqual(expected)
 		})
 		it('returns 0 when cart is empty', () => {
-			expect(getTotalCartValue()).toEqual(0)
+			expect(getTotalCartValue()).toBe(0)
+		})
+	})
+
+	describe('getCartItemCount', () => {
+		it('increases after adding to amount', () => {
+			addToCart(correctProduct)
+			addToCart(correctProduct)
+
+			expect(getCartItemCount()).toBe(2)
+		})
+
+		it('increases after adding item', () => {
+			addToCart(correctProduct)
+			addToCart({ ...correctProduct, productId: 43 })
+
+			expect(getCartItemCount()).toBe(2)
+		})
+
+		it('decreases after removing from amount', () => {
+			addToCart(correctProduct)
+			addToCart(correctProduct)
+			addToCart(correctProduct)
+			removeFromCart(correctProduct.productId)
+
+			expect(getCartItemCount()).toBe(2)
+		})
+
+		it('decreases after removing item', () => {
+			addToCart(correctProduct)
+			addToCart({ ...correctProduct, productId: 43 })
+			removeFromCart(correctProduct.productId)
+
+			expect(getCartItemCount()).toBe(1)
+		})
+
+		it('stays at zero after removing item when cart is zero', () => {
+			expect(() =>
+				removeFromCart(correctProduct.productId)
+			).toThrow()
+
+			expect(getCartItemCount()).toBe(0)
+		})
+
+		it('does not change cart count after editing item', () => {
+			addToCart(correctProduct)
+			editCart(correctProduct.productId, { productId: 344, name: 'CHANGED', price: 52 })
+			expect(getCartItemCount()).toBe(1)
+		})
+	})
+
+	describe('addToCart', () => {
+		it('returns false when product is NOT added', () => {
+			const boolean = addToCart('clearly wrong')
+			expect(boolean).toBe(false)
+		})
+		it('returns true when product is added', () => {
+			const boolean = addToCart(correctProduct)
+			expect(boolean).toBe(true)
+		})
+
+		it('does not add invalid products to cart', () => {
+			const before = getCart()
+			const badProduct = { ...correctProduct, id: undefined }
+			addToCart(badProduct)
+			expect(getCart()).toEqual(before)
+		})
+		it('increments cart length when product is added', () => {
+			addToCart(correctProduct)
+			expect(getCart().length).toBe(1)
 		})
 	})
 
 	describe('removeFromCart', () => {
-		it('reduces item quantity when product is removed', () => {
-			const expected = getCartItemCount()
+		it('returns true on successful removal', () => {
 			addToCart(correctProduct)
-			removeFromCart(correctProduct.productId)
-
-			expect(getCartItemCount()).toEqual(expected)
+			const actual = removeFromCart(correctProduct.productId)
+			expect(actual).toBe(true)
 		})
-		it('decreases cart count when item is removed', () => {
-			const expected = getCartItemCount()
-			addToCart(correctProduct)
-			addToCart(correctProduct)
+
+		it('reduces cart length when product is removed', () => {
 			addToCart(correctProduct)
 			removeFromCart(correctProduct.productId)
 
-			expect(getCartItemCount()).toBe(expected + 2)
+			expect(getCart().length).toBe(0)
+		})
+		it('cart contents are correct after an item is removed', () => {
+			addToCart(correctProduct)
+			addToCart({ ...correctProduct, productId: 2543 })
+			removeFromCart(2543)
+			expect(getCart()).toStrictEqual([{ cartId: correctProduct.productId, amount: 1, item: correctProduct }])
+		})
+		it('throws error when item does not exist', () => {
+			expect(() =>
+				removeFromCart(correctProduct.productId)
+			).toThrow()
 		})
 	})
 
 	describe('editCart', () => {
+		it('returns true on successful edit', () => {
+			addToCart(correctProduct)
+			const actual = editCart(correctProduct.productId, { productId: 344, name: 'CHANGED', price: 52 })
+			expect(actual).toBe(true)
+		})
+
 		it('updates cart item when valid changes are applied', () => {
 			addToCart(correctProduct)
 			const expected = {
@@ -96,7 +154,7 @@ describe('Cart', () => {
 				price: 42
 			}
 			editCart(correctProduct.productId, expected)
-			expect(getItem(0).item).toEqual(expected)
+			expect(getItem(0).item).toStrictEqual(expected)
 		})
 
 		it('ignores invalid updates to cart item', () => {
@@ -109,6 +167,12 @@ describe('Cart', () => {
 
 			editCart(correctProduct.productId, changes)
 			expect(getItem(0).item).toEqual(correctProduct)
+		})
+
+		it('throws error when item does not exist', () => {
+			expect(() =>
+				editCart(correctProduct.productId, correctProduct)
+			).toThrow()
 		})
 	})
 })
